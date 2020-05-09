@@ -218,8 +218,8 @@ class Main(Screen):
     #method to display the total buy and sell price
     def display_total_prices(self):
         """method to display the total buy and sell price"""
-        self.ids.total_buy_price.text = str( self.database.get_total_buy_price()[0][0])
-        self.ids.total_sell_price.text = str( self.database.get_total_sell_price()[0][0])
+        self.ids.total_buy_price.text = f'[b]{self.database.get_total_buy_price()[0][0]}[color=#ffffff55]$[/color][/b]'
+        self.ids.total_sell_price.text = f'[b]{self.database.get_total_sell_price()[0][0]}[color=#ffffff55]$[/color][/b]'
 
     def on_enter(self, *args, **kwargs):
         """redefined method """

@@ -31,7 +31,7 @@ class DataBase:
         except Exception as error:
             print('DATABASE ERROR:', error)
             self.connection.rollback()
-
+    #method to get total sell price of all products
     def get_total_sell_price(self):
         """ total sell price getter """
         try:
@@ -44,6 +44,30 @@ class DataBase:
             print('DATABASE ERROR:', error)
             self.connection.rollback()
 
+    #method to get the total price oe the sell products
+    def get_sell_products_total_sell_price(self):
+        """ getter the total price oe the sell products """
+        try:
+            #get the total price oe the sell products
+            self.cursor.execute('SELECT SUM(sell_price*quantity) FROM product WHERE sell_quantity>0')
+            sell_products_total_sell_price = self.cursor.fetchall()
+            #return of the sell_products_total_sell_price
+            return sell_products_total_sell_price
+        except Exception as error:
+            print('DATABASE ERROR:', error)
+
+    #method to get all the sell products
+    def get_all_sell_products(self):
+        """ method to get all the sell products """
+        try:
+            #get of the sell products, => is at less sell if the sell_quantity >0
+            self.cursor.execute('SELECT * FROM product WHERE sell_quantity>0')
+            sell_products = self.cursor.fetchall()
+            #return of the sell products
+            return sell_products
+        except Exception as error:
+            print('DATABASE ERROR:', error)
+            self.connection.rollback()
 
     def get_all_products(self):
         """ all products getter """
@@ -165,6 +189,5 @@ if __name__ == '__main__':
     # print('seon')
     # for expense in database.get_all_expenses():
     #     print(expense)
-    b = database.get_total_buy_price()
-    s = database.get_total_sell_price()
-    print(b, s)
+    s = database.get_sell_products_total_sell_price()
+    print(s)
