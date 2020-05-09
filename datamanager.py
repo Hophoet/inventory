@@ -123,11 +123,18 @@ class DataBase:
         """increment product qunatity by his id"""
         try:
             #request for the update
-            self.cursor.execute("""
-                UPDATE product
-                SET quantity=?+quantity
-                WHERE id=? """, (increment, id))
-            self.connection.commit()
+            if increment < 0:
+                self.cursor.execute("""
+                    UPDATE product
+                    SET quantity=quantity+?,sell_quantity=sell_quantity-?
+                    WHERE id=? """, (increment, increment, id))
+                self.connection.commit()
+            elif increment > 0:
+                self.cursor.execute("""
+                    UPDATE product
+                    SET quantity=quantity+?
+                    WHERE id=? """, (increment, id))
+                self.connection.commit()
         except Exception as error:
             print('DATABASE ERROR:', error)
             self.connection.rollback()

@@ -60,10 +60,19 @@ class DetailScreen(Screen):
         self.ids.add_quantity.text = str( int(self.ids.add_quantity.text) + inc )
 
     def update_product_quantity(self):
+        """ method to update the product quantity """
+        #get of the product
+        product = self.database.get_product_by_id(id=self.product[0])
         add_quantity = int(self.ids.add_quantity.text)
-        product_quantity = int(self.ids.product_quantity.text)
-        self.ids.product_quantity.text = str(add_quantity + product_quantity)
-        self.ids.add_quantity.text = '0'
+        print(product[4], add_quantity)
+        if ( product[4] + add_quantity >= 0):
+            product_quantity = int(self.ids.product_quantity.text)
+            self.ids.product_quantity.text = str(product[4])
+            self.database.update_product_quantity(id=product[0], increment=add_quantity)
+            product = self.database.get_product_by_id(id=self.product[0])
+            self.ids.product_quantity.text = str(product[4])
+            self.ids.add_quantity.text = '0'
+            print(product)
 
 class Main(Screen):
     """ Main screen class """
@@ -106,7 +115,7 @@ class Main(Screen):
             lambda x: print(x),
         )
         bs_menu.add_item(
-            "edit",
+            "view",
             lambda x:self.navigate(product_id=dbase_product[0]),
             icon="file-edit-outline",
         )
@@ -117,10 +126,6 @@ class Main(Screen):
         )
         bs_menu.open()
 
-    def increment(self, product):
-        """method to increment a product number """
-        product.text = 'change'
-        print(dir(product))
 
 
     def save_product(self):
