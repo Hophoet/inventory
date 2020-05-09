@@ -87,20 +87,27 @@ class Main(Screen):
 
     def remove_product(self, product):
         """ product deleter """
-        #removing the product in the database by his id
-        self.database.delete_product(product.id)
-        #removing of the product to the screen
-        self.ids.product.remove_widget(product)
-        
+        #get of the product in the database
+        prd = self.database.get_product_by_id(product.id)
+        #check o if the product quantity is zero
+        if prd[4] == 0:
+            #removing the product in the database by his id
+            self.database.delete_product(product.id)
+            #removing of the product to the screen
+            self.ids.product.remove_widget(product)
+
     def show_example_bottom_sheet(self, product):
+        """ method the show the bottom sheet after the click on the product """
+        #get of the product in the database
+        dbase_product = self.database.get_product_by_id(product.id)
         bs_menu = MDListBottomSheet()
         bs_menu.add_item(
-            f'{product.text} {product.secondary_text} id={product.id}',
+            f'{dbase_product[4]}- [b]{dbase_product[1]}[/b] {dbase_product[2]}$ {dbase_product[3]}$',
             lambda x: print(x),
         )
         bs_menu.add_item(
             "edit",
-            lambda x:self.navigate(product_id=product.id),
+            lambda x:self.navigate(product_id=dbase_product[0]),
             icon="file-edit-outline",
         )
         bs_menu.add_item(
