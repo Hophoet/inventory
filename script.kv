@@ -1,0 +1,388 @@
+
+<Manager>:
+    id:screen_manager
+    screen_one:login_screen
+    screen_two:main_screen
+    screen_tree:detail_screen
+    Login:
+        id:login_screen
+        name:'login'
+        manager:screen_manager
+    Main:
+        id:main_screen
+        name:'main'
+        manager:screen_manager
+    DetailScreen:
+        id:detail_screen
+        name:'detail'
+        manager:screen_manager
+
+
+<Login>:
+    BoxLayout:
+        orientation:'vertical'
+        size_hint:.5, .5
+        pos_hint:{'center_x':.5, 'center_y':.5}
+        id:box
+        # canvas.before:
+        #     Color:
+        #         rgb: (0 , .4, .5 ,1)
+        #     Rectangle:
+        #         size: self.size
+        #         pos: self.pos
+
+        Label:
+            text:'[b]Invent[color=0000ff55]or[/color][/b]'
+            font_style:'H3'
+            font_size:40
+            markup:True
+
+        BoxLayout:
+            orientation:'horizontal'
+            MDTextField:
+                id: password
+                password:True
+                focus:True
+                hint_text: "Password"
+                #required: True
+                helper_text_mode: "on_error"
+                on_text_validate:root.navigate('main')
+                #line_color_normal:1, 1, 1, 1
+                #line_color_focus:1, 1, 1, 1
+                helper_text:'Password required'
+                icon_left: 'email'
+                max_text_length:25
+                pos_hint:{'center_y':.5}
+            MDFloatingActionButton:
+                icon: 'login'
+                md_bg_color:[1, 1, 1, 1]
+                text_color:[0, 0, 0, 1]
+                on_press:root.navigate('MAIn')
+                id:button
+                opposite_colors: True
+                elevation_normal: 8
+                pos_hint:{'center_y':.5}
+
+
+
+        Label:
+            id: login_label
+            size_hint:1, None
+            halign: 'center'
+
+<DetailScreen>:
+
+    BoxLayout:
+        orientation:'vertical'
+
+        MDToolbar:
+            id: detail_toolbar
+            title: ''
+            left_action_items: [['arrow-left', root.back]]
+            #right_action_items:[['logout', root.navigate ]]
+            md_bg_color:self.theme_cls.primary_color
+        BoxLayout:
+            orientation:'horizontal'
+            size_hint_y: None
+            size_hint_x:.5
+            height: self.minimum_height
+            cols: 1
+            pos_hint:{'center_x':.5, 'center_y':.5}
+            id:box
+            # canvas.before:
+            #     Color:
+            #         rgb: (0 , .4, .5 ,1)
+            #     Rectangle:
+            #         size: self.size
+            #         pos: self.pos
+
+
+
+        BoxLayout:
+            height: self.minimum_height
+            orientation:'vertical'
+            size_hint_x:1
+            Label:
+                id:product_name
+                markup:True
+                halign: 'center'
+                font_size:50
+                halign: 'left'
+            BoxLayout:
+                pos_hint:{'center_x':.5}
+                size_hint_x:.3
+                height:self.minimum_height
+                orientation:'horizontal'
+                Label:
+                    text:'+ or - quantity'
+
+                Label:
+                    id:product_quantity
+                    font_size:30
+                    markup:True
+                MDIconButton:
+                    icon: 'arrow-left-drop-circle'
+                    on_press:root.add_quantity(-1)
+                Label:
+                    id:add_quantity
+                    text:'13'
+                    markup:True
+                MDIconButton:
+                    icon: 'arrow-right-drop-circle'
+                    on_press:root.add_quantity(1)
+
+                MDIconButton:
+                    icon: 'content-save'
+                    on_press:root.update_product_quantity()
+
+            Label:
+                id:product_buy_price
+                font_size:30
+                markup:True
+
+            Label:
+                id:product_sell_price
+                font_size:30
+                markup:True
+
+            GridLayout:
+
+                size_hint_y: None
+                height: self.minimum_height
+                cols: 1
+        RecycleView:
+            id: Product_detail
+            key_viewclass: 'viewclass'
+            key_size: 'height'
+
+            BoxLayout:
+
+                size_hint_y: None
+                height: self.minimum_height
+                cols: 1
+                id: product
+                orientation: 'vertical'
+
+
+<Main>:
+    BoxLayout:
+        orientation:'vertical'
+
+        MDToolbar:
+            id: toolbar
+            title: 'Inventor'
+            #left_action_items: [['menu', lambda x: '']]
+            right_action_items:[['alpha-o-circle', root.logout ]]
+            md_bg_color:self.theme_cls.primary_color
+
+        MDBottomNavigation:
+            id: panel
+
+            MDBottomNavigationItem:
+                name: 'products'
+                text: 'R PRODUCTS'
+                icon: 'account-badge-horizontal'
+
+
+                BoxLayout:
+                    orientation: 'vertical'
+                    spacing: dp(10)
+                    padding: dp(20)
+
+                    BoxLayout:
+                        size_hint_y: None
+                        height: self.minimum_height
+                        orientation: 'horizontal'
+                        Label:
+                            text:'Product name'
+                        Label:
+                            text:'Buy Price'
+                        Label:
+                            text:'Sell Price'
+                        Label:
+                            text:'Quantity'
+                        Label:
+                            text:'Code'
+                        Label:
+                            text:''
+
+                    BoxLayout:
+                        size_hint_y: None
+                        height: 30
+                        orientation: 'horizontal'
+
+                        TextInput:
+                            id: product_name
+                            hint_text: "name"
+                            multiline: False
+                            auto_focus: True
+                            on_text_validate: buy_price.focus = True
+                        TextInput:
+                            id: buy_price
+                            hint_text: "buy price"
+                            multiline: False
+                            on_text_validate: sell_price.focus = True
+                        TextInput:
+                            id: sell_price
+                            hint_text: "sell price"
+                            multiline: False
+                            on_text_validate: quantity.focus = True
+                        TextInput:
+                            id: quantity
+                            hint_text: "quantity"
+                            multiline: False
+                            on_text_validate: code.focus = True
+                        TextInput:
+                            id: code
+                            hint_text: "code"
+                            multiline: False
+                            on_text_validate: root.save_product()
+
+                        Button:
+                            size_hint_y: None
+                            height:30
+                            text: "save"
+                            on_press: root.save_product()
+
+
+
+                    BoxLayout:
+                        size_hint_y: None
+                        height: self.minimum_height
+                        padding:(10, 10)
+                        orientation: 'horizontal'
+                        MDLabel:
+                            id:total_buy_price
+                            font_style: 'Body1'
+                            theme_text_color: 'Primary'
+                            text: '[b]34900[color=#ffffff55]$[/color][/b]'
+                            halign: 'center'
+                            font_size:30
+                            markup:True
+                        MDLabel:
+                            id:total_sell_price
+                            font_style: 'Body1'
+                            theme_text_color: 'Primary'
+                            text: '[b]24300[color=#ffffff55]$[/color][/b]'
+                            halign: 'center'
+                            font_size:30
+                            markup:True
+
+
+                    RecycleView:
+                        id: Product_rv
+                        key_viewclass: 'viewclass'
+                        key_size: 'height'
+
+                        BoxLayout:
+
+                            size_hint_y: None
+                            height: self.minimum_height
+                            cols: 1
+                            id: product
+                            orientation: 'vertical'
+            MDBottomNavigationItem:
+                name: 'sell_product'
+                text: 'S PRODUCT'
+                icon: 'account-badge-horizontal'
+                BoxLayout:
+                    orientation: 'vertical'
+                    spacing: dp(10)
+                    padding: dp(20)
+
+                    BoxLayout:
+                        size_hint_y: None
+                        height: self.minimum_height
+                        orientation: 'horizontal'
+
+            MDBottomNavigationItem:
+                name: 'expenses'
+                text: 'EXPENSES'
+                icon: 'account-badge-horizontal'
+                BoxLayout:
+                    orientation: 'vertical'
+                    spacing: dp(10)
+                    padding: dp(20)
+
+                    BoxLayout:
+                        size_hint_y: None
+                        height: self.minimum_height
+                        orientation: 'horizontal'
+                        Label:
+                            text:'Price'
+                            size_hint_x:.2
+                        Label:
+                            text:'Description'
+                        Label:
+                            text:''
+                            size_hint_x:.2
+                    BoxLayout:
+                        size_hint_y: None
+                        height: 30
+                        orientation: 'horizontal'
+
+                        TextInput:
+                            id: expense_name
+                            hint_text: "price"
+                            multiline: False
+                            size_hint_x:.2
+                            on_text_validate: expense_description.focus = True
+
+
+                        TextInput:
+                            id: expense_description
+                            hint_text: "description"
+                            multiline: False
+                            on_text_validate: root.save_expense()
+                        Button:
+                            size_hint_y: None
+                            height:30
+                            size_hint_x:.2
+                            text: "save"
+                            on_press: root.save_expense()
+
+                    BoxLayout:
+                        size_hint_y: None
+                        height: self.minimum_height
+                        padding:(10, 10)
+                        orientation: 'horizontal'
+                        MDLabel:
+                            font_style: 'Body1'
+                            theme_text_color: 'Primary'
+                            text: '[b]14900[color=#ffffff55]$[/color][/b]'
+                            halign: 'center'
+                            font_size:30
+                            markup:True
+
+                    RecycleView:
+                        id: expense_rv
+                        key_viewclass: 'viewclass'
+                        key_size: 'height'
+
+                        BoxLayout:
+
+                            size_hint_y: None
+                            height: self.minimum_height
+                            cols: 1
+                            id: expense
+                            orientation: 'vertical'
+
+            MDBottomNavigationItem:
+                name: 'results'
+                text: 'RESULTS'
+                icon: 'account-badge-horizontal'
+
+
+                BoxLayout:
+                    size_hint: None, None
+                    size: self.minimum_size
+                    padding: "10dp"
+                    spacing: "10dp"
+                    pos_hint: {'center_x': .5, "center_y": .9}
+
+                    MDIconButton:
+                        icon: 'alpha-p-box'
+                    MDIconButton:
+                        icon: 'alpha-e-box'
+                    MDIconButton:
+                        icon: 'alpha-r-box'
