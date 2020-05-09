@@ -63,14 +63,17 @@ class DetailScreen(Screen):
         """ method to update the product quantity """
         #get of the product
         product = self.database.get_product_by_id(id=self.product[0])
+        #get of the quantity to add
         add_quantity = int(self.ids.add_quantity.text)
-        print(product[4], add_quantity)
+        #checking if the add quantity is less than the product quantity
         if ( product[4] + add_quantity >= 0):
-            product_quantity = int(self.ids.product_quantity.text)
-            self.ids.product_quantity.text = str(product[4])
+            #update of the quantity in the database
             self.database.update_product_quantity(id=product[0], increment=add_quantity)
+            #get of the current modified product
             product = self.database.get_product_by_id(id=self.product[0])
+            #change of the product quantity with the new quantity on the screen (detail screen)
             self.ids.product_quantity.text = str(product[4])
+            #reset of the add quantity
             self.ids.add_quantity.text = '0'
             print(product)
 
@@ -104,6 +107,8 @@ class Main(Screen):
             self.database.delete_product(product.id)
             #removing of the product to the screen
             self.ids.product.remove_widget(product)
+            #reload of the total prices on the screen
+            self.display_total_prices()
 
     def show_example_bottom_sheet(self, product):
         """ method the show the bottom sheet after the click on the product """
@@ -153,6 +158,8 @@ class Main(Screen):
 
                 )#.add_widget(IconLeftSampleWidget(icon='account-card-details'))
         )
+        #reload of the total prices on the screen
+        self.display_total_prices()
 
     def save_expense(self):
         #get of the expense price and his description
@@ -192,6 +199,7 @@ class Main(Screen):
                     )#.add_widget(IconLeftSampleWidget(icon='account-card-details'))
             )
 
+
     #method to dispay expenses
     def display_expenses(self, expenses):
         """method to add the current expense as a widget in the view part"""
@@ -207,14 +215,18 @@ class Main(Screen):
 
                     )#.add_widget(IconLeftSampleWidget(icon='account-card-details'))
             )
+    #method to display the total buy and sell price
+    def display_total_prices(self):
+        """method to display the total buy and sell price"""
+        self.ids.total_buy_price.text = str( self.database.get_total_buy_price()[0][0])
+        self.ids.total_sell_price.text = str( self.database.get_total_sell_price()[0][0])
 
     def on_enter(self, *args, **kwargs):
         """redefined method """
+        self.display_total_prices()
         if self.display:
             self.display_products(self.database.get_all_products())
             self.display_expenses(self.database.get_all_expenses())
-            self.ids.total_buy_price.text = str( self.database.get_total_buy_price()[0][0])
-            self.ids.total_sell_price.text = str( self.database.get_total_sell_price()[0][0])
             self.display = False
         #self.display_client()
         self.ids.product_name.focus
