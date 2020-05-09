@@ -56,6 +56,19 @@ class DataBase:
         except Exception as error:
             print('DATABASE ERROR:', error)
 
+    #method to get total expense price
+    def get_total_expense_price(self):
+        """ total expense price getter """
+        try:
+            #get of the total expense
+            self.cursor.execute('SELECT SUM(price) FROM expense')
+            total_expense_price = self.cursor.fetchall()
+            #return of the total_expense_price
+            return total_expense_price
+        except Exception as error:
+            print('DATABASE ERROR:', error)
+            self.connection.rollback()
+
     #method to get all the sell products
     def get_all_sell_products(self):
         """ method to get all the sell products """
@@ -189,5 +202,5 @@ if __name__ == '__main__':
     # print('seon')
     # for expense in database.get_all_expenses():
     #     print(expense)
-    s = database.get_sell_products_total_sell_price()
+    s = database.get_total_expense_price()
     print(s)

@@ -180,6 +180,8 @@ class Main(Screen):
 
                 )#.add_widget(IconLeftSampleWidget(icon='account-card-details'))
         )
+        #reload of the total expense price
+        self.display_total_expense_price()
 
     #method to dispay products
     def display_products(self, products):
@@ -215,6 +217,12 @@ class Main(Screen):
 
                     )#.add_widget(IconLeftSampleWidget(icon='account-card-details'))
             )
+
+    #method to display the total expense price
+    def display_total_expense_price(self):
+        """method to display the total expense price"""
+        self.ids.expense_price.text = f'[b]{self.database.get_total_expense_price()[0][0]}[color=#ffffff55]$[/color][/b]'
+
     #method to display the total buy and sell price
     def display_total_prices(self):
         """method to display the total buy and sell price"""
@@ -224,6 +232,7 @@ class Main(Screen):
     def on_enter(self, *args, **kwargs):
         """redefined method """
         self.display_total_prices()
+        self.display_total_expense_price()
         if self.display:
             self.display_products(self.database.get_all_products())
             self.display_expenses(self.database.get_all_expenses())
