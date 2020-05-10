@@ -180,7 +180,7 @@
 
             MDBottomNavigationItem:
                 name: 'products'
-                text: 'R PRODUCTS'
+                text: 'REMAINING PRODUCTS'
                 icon: 'account-badge-horizontal'
 
 
@@ -280,8 +280,8 @@
                             id: product
                             orientation: 'vertical'
             MDBottomNavigationItem:
-                name: 'sell_product'
-                text: 'S PRODUCT'
+                name: 'sell_products'
+                text: 'SELL PRODUCTS'
                 icon: 'account-badge-horizontal'
                 BoxLayout:
                     orientation: 'vertical'
@@ -292,6 +292,14 @@
                         size_hint_y: None
                         height: self.minimum_height
                         orientation: 'horizontal'
+                        MDLabel:
+                            id:sell_product_total_price
+                            font_style: 'Body1'
+                            theme_text_color: 'Primary'
+
+                            halign: 'center'
+                            font_size:30
+                            markup:True
 
                     RecycleView:
                         id: sell_prodcut_scroll

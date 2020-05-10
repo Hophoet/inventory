@@ -203,6 +203,8 @@ class Main(Screen):
     #method to dispay products
     def display_sell_products(self, products):
         """method to add the current sell products as a widget in the view part"""
+        #display the sell products total price
+        self.display_sell_products_total_price()
         #set of the sell products list as a generator
         self.ids.sell_products_scroll.clear_widgets()
         products = (product for product in products)
@@ -232,6 +234,11 @@ class Main(Screen):
 
                     )#.add_widget(IconLeftSampleWidget(icon='account-card-details'))
             )
+
+    #method to display the sell products total price
+    def display_sell_products_total_price(self):
+        """ method to display the sell products total price """
+        self.ids.sell_product_total_price.text = f'[b]{self.database.get_sell_products_total_price()[0][0]}[color=#ffffff55]$[/color][/b]'
 
     #method to display the total expense price
     def display_total_expense_price(self):

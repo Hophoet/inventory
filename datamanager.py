@@ -45,11 +45,11 @@ class DataBase:
             self.connection.rollback()
 
     #method to get the total price oe the sell products
-    def get_sell_products_total_sell_price(self):
+    def get_sell_products_total_price(self):
         """ getter the total price oe the sell products """
         try:
             #get the total price oe the sell products
-            self.cursor.execute('SELECT SUM(sell_price*quantity) FROM product WHERE sell_quantity>0')
+            self.cursor.execute('SELECT SUM(sell_price*sell_quantity) FROM product WHERE sell_quantity>0')
             sell_products_total_sell_price = self.cursor.fetchall()
             #return of the sell_products_total_sell_price
             return sell_products_total_sell_price
