@@ -187,7 +187,7 @@ class Main(Screen):
     def display_products(self, products):
         """method to add the current client as a widget in the view part"""
 
-        #set of the customers list as a generator
+        #set of the remaining product list as a generator
         products = (product for product in products)
         for product in products:
             self.ids.product.add_widget(
@@ -198,7 +198,22 @@ class Main(Screen):
                     secondary_font_style='Subtitle2',
                     on_press=self.show_example_bottom_sheet,
 
-                    )#.add_widget(IconLeftSampleWidget(icon='account-card-details'))
+                    )
+            )
+    #method to dispay products
+    def display_sell_products(self, products):
+        """method to add the current sell products as a widget in the view part"""
+        #set of the sell products list as a generator
+        self.ids.sell_products_scroll.clear_widgets()
+        products = (product for product in products)
+        for product in products:
+            self.ids.sell_products_scroll.add_widget(
+                TwoLineIconListItem(
+                    id=str(product[0]),
+                    text=f'{product[5]}- [b]{product[1]}[/b] ',
+                    secondary_text=f'{product[2]}$\n    {product[3]}$',
+                    secondary_font_style='Subtitle2',
+                    )
             )
 
 
@@ -231,13 +246,17 @@ class Main(Screen):
 
     def on_enter(self, *args, **kwargs):
         """redefined method """
+        #display of the prices on the screen
         self.display_total_prices()
         self.display_total_expense_price()
+        #display of all sell products
+        self.display_sell_products(self.database.get_all_sell_products())
         if self.display:
+            #display of the products and the expenses
             self.display_products(self.database.get_all_products())
             self.display_expenses(self.database.get_all_expenses())
             self.display = False
-        #self.display_client()
+        #focus the add product textfield(textinput)
         self.ids.product_name.focus
 
 
