@@ -183,7 +183,6 @@
                 text: 'REMAINING PRODUCTS'
                 icon: 'account-badge-horizontal'
 
-
                 BoxLayout:
                     orientation: 'vertical'
                     spacing: dp(10)
@@ -392,17 +391,42 @@
                 text: 'RESULTS'
                 icon: 'account-badge-horizontal'
 
-
                 BoxLayout:
-                    size_hint: None, None
-                    size: self.minimum_size
-                    padding: "10dp"
-                    spacing: "10dp"
-                    pos_hint: {'center_x': .5, "center_y": .9}
+                    size_hint_y: None
+                    height: self.minimum_height
+                    orientation: 'horizontal'
+                    MDLabel:
+                        id:result_label
+                        font_style: 'Body1'
+                        theme_text_color: 'Primary'
 
-                    MDIconButton:
-                        icon: 'alpha-p-box'
-                    MDIconButton:
-                        icon: 'alpha-e-box'
-                    MDIconButton:
-                        icon: 'alpha-r-box'
+                        halign: 'center'
+                        font_size:30
+                        markup:True
+
+                RecycleView:
+                    id: sell_prodcut_scroll
+                    key_viewclass: 'viewclass'
+                    key_size: 'height'
+                    BoxLayout:
+
+                        size_hint_y: None
+                        height: self.minimum_height
+                        cols: 1
+                        id: result
+                        orientation: 'vertical'
+                        TwoLineIconListItem:
+                            id:result_total_buy_price_label
+                            secondary_text:'total buy price'
+                        TwoLineIconListItem:
+                            id: result_total_sell_price_label
+                            secondary_text:'total sell price'
+                        TwoLineIconListItem:
+                            id:result_current_sell_price_label
+                            secondary_text:'the current sell price'
+                        TwoLineIconListItem:
+                            id:result_total_cash_flow_label
+                            secondary_text:'the total cash flow'
+                        TwoLineIconListItem:
+                            id:result_current_cash_flow_label
+                            secondary_text:'the current cash flow'

@@ -251,11 +251,29 @@ class Main(Screen):
         self.ids.total_buy_price.text = f'[b]{self.database.get_total_buy_price()[0][0]}[color=#ffffff55]$[/color][/b]'
         self.ids.total_sell_price.text = f'[b]{self.database.get_total_sell_price()[0][0]}[color=#ffffff55]$[/color][/b]'
 
+    #method to display the information(about the shop)
+    def display_result_informations(self):
+        """method to display the information(about the shop) """
+        self.ids.result_total_buy_price_label.text = f'[b]{self.database.get_total_buy_price()[0][0]}[color=#ffffff55]$[/color][/b]'
+        self.ids.result_total_sell_price_label.text = f'[b]{self.database.get_total_sell_price()[0][0]}[color=#ffffff55]$[/color][/b]'
+        self.ids.result_current_sell_price_label.text = f'[b]{self.database.get_sell_products_total_price()[0][0]}[color=#ffffff55]$[/color][/b]'
+        #get of the total sell price of all products
+        total_products_sell_price = self.database.get_total_sell_price()[0][0]
+        #get of the total buy price of all products
+        total_products_buy_price =  self.database.get_total_buy_price()[0][0]
+        #get of the total expense price
+        total_expenses_price = self.database.get_total_expense_price()[0][0]
+        #the total cash flow of the shop
+        total_cash_flow = total_products_sell_price - (total_products_buy_price + total_expenses_price)
+        #display the total cash flow
+        self.ids.result_total_cash_flow_label.text = f'[b]{total_cash_flow}[color=#ffffff55]$[/color][/b]'
+
     def on_enter(self, *args, **kwargs):
         """redefined method """
         #display of the prices on the screen
         self.display_total_prices()
         self.display_total_expense_price()
+        self.display_result_informations()
         #display of all sell products
         self.display_sell_products(self.database.get_all_sell_products())
         if self.display:
